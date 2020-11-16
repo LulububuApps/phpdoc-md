@@ -1,33 +1,37 @@
 {
-    "name": "lulububu/phpdoc-md",
-    "description" : "PHP documentation generator, with markdown output",
-    "keywords" : [ "PHP", "Markdown", "PHPDoc" ],
-    "homepage" : "https://github.com/lulububu/phpdoc-md",
-    "license" : "MIT",
-    "require" : {
-        "php" : ">=7.3.0",
-        "twig/twig" : "~1.2|2.0"
-    },
-    "require-dev" : {
-        "phpdocumentor/phpdocumentor" : "~2.8.0"
-    },
-    "authors" : [
-        {
-            "name" : "Michael Malura",
-            "email" : "michael@lulububu.de",
-            "homepage" : "https://lulububu.de/",
-            "role" : "Developer"
-        }
-    ],
-    "autoload" : {
-        "psr-4" : {
-            "PHPDocMD\\" : "src/"
-        }
-    },
-    "bin" : [
-        "bin/phpdocmd"
-    ],
-    "config" : {
-        "bin-dir" : "bin"
+  "name": "lulububu/phpdoc-md",
+  "description": "PHP documentation generator, with markdown output",
+  "keywords": [
+    "PHP",
+    "Markdown",
+    "PHPDoc"
+  ],
+  "homepage": "https://github.com/lulububu/phpdoc-md",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.3.0",
+    "twig/twig": "^1.42.3 || ^2.12"
+  },
+  "require-dev": {
+    "phpdocumentor/phpdocumentor": "~2.8.0"
+  },
+  "authors": [
+    {
+      "name": "Michael Malura",
+      "email": "michael@lulububu.de",
+      "homepage": "https://lulububu.de/",
+      "role": "Developer"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "PHPDocMD\\": "src/"
+    }
+  },
+  "bin": [
+    "bin/phpdocmd"
+  ],
+  "config": {
+    "bin-dir": "bin"
+  }
 }
