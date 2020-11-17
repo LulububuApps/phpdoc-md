@@ -1,3 +1,12 @@
+{# @formatter:off #}
+---
+{% if documented %}
+title: ⭐️ {{ shortClass }}
+{% else %}
+title: {{ shortClass }}
+{% endif %}
+---
+
 {{ className }}
 ===============
 
@@ -29,6 +38,12 @@
 {% if deprecated %}* **Warning:** this interface is **deprecated**. This means that this interface will likely be removed in a future version.
 {% endif %}
 
+{% endif %}
+{% if authors %}
+* Authors:
+{% for author in authors %}
+    * {{ author|raw }}
+{% endfor %}
 {% endif %}
 
 {% if constants %}

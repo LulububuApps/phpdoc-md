@@ -52,7 +52,7 @@ class Generator
     protected $apiIndexFile;
 
     /**
-     * @param array  $classDefinitions
+     * @param array $classDefinitions
      * @param string $outputDir
      * @param string $templateDir
      * @param string $linkTemplate
@@ -61,10 +61,10 @@ class Generator
     function __construct(array $classDefinitions, $outputDir, $templateDir, $linkTemplate = '%c.md', $apiIndexFile = 'ApiIndex.md')
     {
         $this->classDefinitions = $classDefinitions;
-        $this->outputDir = $outputDir;
-        $this->templateDir = $templateDir;
-        $this->linkTemplate = $linkTemplate;
-        $this->apiIndexFile = $apiIndexFile;
+        $this->outputDir        = $outputDir;
+        $this->templateDir      = $templateDir;
+        $this->linkTemplate     = $linkTemplate;
+        $this->apiIndexFile     = $apiIndexFile;
     }
 
     /**
@@ -73,11 +73,10 @@ class Generator
     function run()
     {
         $loader = new Twig_Loader_Filesystem($this->templateDir);
-
-        $twig = new Twig_Environment($loader);
+        $twig   = new Twig_Environment($loader);
 
         $GLOBALS['PHPDocMD_classDefinitions'] = $this->classDefinitions;
-        $GLOBALS['PHPDocMD_linkTemplate'] = $this->linkTemplate;
+        $GLOBALS['PHPDocMD_linkTemplate']     = $this->linkTemplate;
 
         $filter = new Twig_SimpleFilter('classLink', ['PHPDocMd\\Generator', 'classLink']);
         $twig->addFilter($filter);
@@ -106,23 +105,27 @@ class Generator
      * I'm generating the actual markdown output here, which isn't great...But it will have to do.
      * If I don't want to make things too complicated.
      *
-     * @return array
+     * @return string
      */
     protected function createIndex()
     {
-        $tree = [];
+        $tree           = [];
+        $jsonClassArray = [];
 
         foreach ($this->classDefinitions as $className => $classInfo) {
-            $current = & $tree;
+            $current          = &$tree;
+            $jsonClassArray[] = $className;
 
             foreach (explode('\\', $className) as $part) {
                 if (!isset($current[$part])) {
                     $current[$part] = [];
                 }
 
-                $current = & $current[$part];
+                $current = &$current[$part];
             }
         }
+
+        file_put_contents($this->outputDir . '/index.json', json_encode($jsonClassArray, JSON_PRETTY_PRINT));
 
         /**
          * This will be a reference to the $treeOutput closure, so that it can be invoked
@@ -131,7 +134,7 @@ class Generator
          */
         $treeOutput = '';
 
-        $treeOutput = function($item, $fullString = '', $depth = 0) use (&$treeOutput) {
+        $treeOutput = function ($item, $fullString = '', $depth = 0) use (&$treeOutput) {
             $output = '';
 
             foreach ($item as $name => $subItems) {
@@ -159,7 +162,7 @@ class Generator
      * Due to the unfortunate way twig works, this must be static, and we must use a global to
      * achieve our goal.
      *
-     * @param string      $className
+     * @param string $className
      * @param null|string $label
      *
      * @return string
@@ -167,7 +170,7 @@ class Generator
     static function classLink($className, $label = null)
     {
         $classDefinitions = $GLOBALS['PHPDocMD_classDefinitions'];
-        $linkTemplate = $GLOBALS['PHPDocMD_linkTemplate'];
+        $linkTemplate     = $GLOBALS['PHPDocMD_linkTemplate'];
 
         $returnedClasses = [];
 

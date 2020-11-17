@@ -83,7 +83,21 @@ class Parser
                 }
             }
 
+            $authors =[];
+
+            foreach($class->xpath('docblock/tag[@name="author"]') as $author){
+                $authors[] = $author['description'];
+            }
+
+            $documented = $class->xpath('docblock/tag[@name="documented"]') ?: false;
+
+            if ($documented) {
+                $documented = true;
+            }
+
             $classNames[$className] = [
+                'authors'         => $authors,
+                'documented'      => $documented,
                 'fileName'        => $fileName,
                 'className'       => $className,
                 'shortClass'      => (string)$class->name,
@@ -138,7 +152,7 @@ class Parser
             foreach ($method->argument as $argument) {
                 $nArgument = [
                     'type' => (string)$argument->type,
-                    'name' => (string)$argument->name
+                    'name' => (string)$argument->name,
                 ];
 
                 $tags = $method->xpath(
@@ -164,7 +178,7 @@ class Parser
                 $arguments[] = $nArgument;
             }
 
-            $argumentStr = implode(', ', array_map(function($argument) {
+            $argumentStr = implode(', ', array_map(function ($argument) {
                 $return = $argument['name'];
 
                 if ($argument['type']) {
@@ -210,9 +224,9 @@ class Parser
         $className = ltrim($className, '\\');
 
         foreach ($class->property as $xProperty) {
-            $type = 'mixed';
+            $type     = 'mixed';
             $propName = (string)$xProperty->name;
-            $default = (string)$xProperty->default;
+            $default  = (string)$xProperty->default;
 
             $xVar = $xProperty->xpath('docblock/tag[@name="var"]');
 
@@ -221,7 +235,7 @@ class Parser
             }
 
             $visibility = (string)$xProperty['visibility'];
-            $signature = sprintf('%s %s %s', $visibility, $type, $propName);
+            $signature  = sprintf('%s %s %s', $visibility, $type, $propName);
 
             if ($default) {
                 $signature .= ' = ' . $default;
@@ -261,7 +275,7 @@ class Parser
         $className = ltrim($className, '\\');
 
         foreach ($class->constant as $xConstant) {
-            $name = (string)$xConstant->name;
+            $name  = (string)$xConstant->name;
             $value = (string)$xConstant->value;
 
             $signature = sprintf('const %s = %s', $name, $value);

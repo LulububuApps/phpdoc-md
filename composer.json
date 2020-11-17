@@ -10,7 +10,8 @@
   "license": "MIT",
   "require": {
     "php": ">=7.3.0",
-    "twig/twig": "^1.42.3 || ^2.12"
+    "twig/twig": "^1.42.3 || ^2.12",
+    "ext-json": "*"
   },
   "require-dev": {
     "phpdocumentor/phpdocumentor": "~2.8.0"
