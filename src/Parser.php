@@ -89,7 +89,7 @@ class Parser
                 $authors[] = $author['description'];
             }
 
-            $documented = $class->xpath('docblock/tag[@name="documented"]') ?: false;
+            $documented = $class->xpath('docblock/tag[@name="Documented"]') ?: false;
 
             if ($documented) {
                 $documented = true;
